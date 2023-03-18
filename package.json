@@ -1,0 +1,36 @@
+{
+  "name": "systeminfo",
+  "author": "Ben Meakings",
+  "description": "",
+  "license": "",
+  "repository": "",
+  "version": "0.0.1",
+  "main": "main.js",
+  "scripts": {
+    "build": "electron-builder",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1"
+  },
+  "dependencies": {
+    "electron-updater": "^4.3.5",
+    "systeminformation": "^4.29.3"
+  },
+  "build": {
+    "appId": "com.test.app.systeminfo",
+    "productName": "systeminfo",
+    "copyright": "Copyright © Ben Meakings",
+    "directories": {
+      "output": "dist"
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "/systeminfo/",
+        "channel": "latest"
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+	"_dir": "ltr",
+	"artist": "Artist",
+	"fade_volume": "Fade volume on pause",
+	"language": "Language",
+	"loop": "Loop",
+	"mute": "Mute",
+	"next_track": "Next Track",
+	"open_file": "Open File",
+	"play_pause": "Play / Pause",
+	"play_on_add": "Play after adding files to playlist",
+	"playlist_add": "Add to Playlist",
+	"playlist_clear": "Clear Playlist",
+	"playlist_shuffle": "Shuffle Playlist",
+	"prev_track": "Previous Track",
+	"settings": "Settings",
+	"stop": "Stop",
+	"title": "Title",
+	"track_delay": "Delay between tracks in playlist",
+	"volume": "Volume",
+	"END": ""
+}
