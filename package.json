@@ -1,5 +1,5 @@
 {
-  "name": "systeminfo",
+  "name": "audio-player",
   "author": "Ben Meakings",
   "description": "",
   "license": "",
@@ -12,8 +12,8 @@
   "devDependencies": {},
   "dependencies": {},
   "build": {
-    "appId": "com.test.app.systeminfo",
-    "productName": "systeminfo",
+    "appId": "com.github.bmeakings.audioplayer",
+    "productName": "audio-player",
     "copyright": "Copyright © Ben Meakings"
   }
 }

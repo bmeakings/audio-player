@@ -1,7 +1,7 @@
 <div ng-controller="SettingsCtrl">
 	<md-toolbar>
 		<div class="md-toolbar-tools">
-			<h2 flex md-trucate>{{$parent.langStrings.settings}}</h2>
+			<h2 flex md-trucate>{{ $parent.langStrings.settings }}</h2>
 			<md-button class="md-icon-button">
 				<md-icon md-svg-icon="./imgs/close.svg" ng-click="closeSettings()"></md-icon>
 			</md-button>
@@ -14,26 +14,29 @@
 
 					<!-- language -->
 					<div layout="row" layout-align="space-between center">
-						<span>{{$parent.langStrings.language}}</span>
+						<span>{{ $parent.langStrings.language }}</span>
 						<md-select
 							class="md-no-underline"
 							ng-model="settings.language"
 							ng-change="langChanged()"
 							aria-label="Language"
 						>
-							<md-option ng-repeat="(key, val) in settings.langsMenu" value="{{key}}">{{val}}</md-option>
+							<md-option
+								ng-repeat="(key, val) in settings.langsMenu"
+								value="{{ key }}"
+							>{{ val }}</md-option>
 						</md-select>
 					</div>
 
 					<!-- play on add -->
-					<md-checkbox ng-model="settings.play_on_add">{{$parent.langStrings.play_on_add}}</md-checkbox>
+					<md-checkbox ng-model="settings.play_on_add">{{ $parent.langStrings.play_on_add }}</md-checkbox>
 
 					<!-- fade volume -->
-					<md-checkbox ng-model="settings.fade_on_pause">{{$parent.langStrings.fade_volume}}</md-checkbox>
+					<md-checkbox ng-model="settings.fade_on_pause">{{ $parent.langStrings.fade_volume }}</md-checkbox>
 
 					<!-- track delay -->
 					<div layout="row" layout-align="space-between center">
-						<span>{{$parent.langStrings.track_delay}}</span>
+						<span>{{ $parent.langStrings.track_delay }}</span>
 						<input
 							type="number"
 							min="0"

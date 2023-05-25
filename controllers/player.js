@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
 (angular
 	.module(appName)
-	.controller("PlayerCtrl", function($scope, $http, $timeout)
-	{
-		const savedVolume = localStorage.getItem("volume");
+	.controller('PlayerCtrl', ($scope, $timeout) => {
+		const savedVolume = localStorage.getItem('volume');
 		const audioObj = new Audio();
 		const audioCtx = new AudioContext();
 		const audioAnl = audioCtx.createAnalyser();
 		const audioSrc = audioCtx.createMediaElementSource(audioObj);
-		const canvasEle = document.getElementById("visualiserCvs");
-		const canvasCtx = canvasEle.getContext("2d");
+		const canvasEle = document.getElementById('visualiserCvs');
+		const canvasCtx = canvasEle.getContext('2d');
 
 		let updateTimer = null;
 		let seekerDelay = null;
 		let volBeforeMute = 0.0;
+		let volBeforeFade = 0.0;
 		let analyserBufr = null;
 		let analyserData = null;
 		let analyserBarW = 0;
@@ -22,36 +22,41 @@
 		let analyserBarX = 0;
 		let canvasW = 0;
 		let canvasH = 0;
-		let nextTrackDelay = 1000;
 		let playOpenedFile = false;
 		let newPlaylist = false;
-		let fadeOnPause = true;
 
-		$scope.currVolume = savedVolume || 0.5;
+		$scope.settings = {};
+		$scope.currVolume = parseFloat(savedVolume) || 0.5;
 		$scope.settingsOpen = false;
-		$scope.appVersion = "0.0.1";
-		$scope.volumeImg = "";
-		$scope.shuffleImg = "shuffle";
+		$scope.appVersion = '0.0.1';
+		$scope.volumeImg = '';
+		$scope.shuffleImg = 'shuffle';
 		$scope.volumePcnt = 0;
-		$scope.openFiles = "";
+		$scope.openFiles = '';
 		$scope.currPlayIdx = 0;
 		$scope.playlist = [];
-		$scope.currTrack = "";
-		$scope.volumeSlider = {"value": 0.0};
+		$scope.currTrack = '';
+		$scope.volumeSlider = {'value': 0.0};
 		$scope.randomOrder = false;
 
 		$scope.playback = {
-			"title": "",
-			"artist": "",
-			"playing": false,
-			"time": 0.0,
-			"duration": 0.0,
-			"timePlayed": "00:00",
-			"timeTotal": "00:00",
-			"loop": false,
-		};
+			'title': '',
+			'artist': '',
+			'playing': false,
+			'time': 0.0,
+			'duration': 0.0,
+			'timePlayed': '00:00',
+			'timeTotal': '00:00',
+			'loop': false,
+		}
 
-		const addToPlaylist = (files) => {
+		function setPlaybackStatus(status) {
+			$timeout(() => {
+				$scope.playback.playing = status;
+			});
+		}
+
+		function addToPlaylist(files) {
 			const playlistEmpty = ($scope.playlist.length == 0);
 
 			for (const f of files)
@@ -61,9 +66,9 @@
 
 			if (!$scope.playback.playing && playlistEmpty && playOpenedFile)
 				playMedia(0);
-		};
+		}
 
-		const playMedia = (index) => {
+		function playMedia(index) {
 			newPlaylist = false;
 			$scope.currPlayIdx = index;
 
@@ -73,18 +78,18 @@
 			const fileType = file.type;
 
 			const req = new XMLHttpRequest();
-				req.open("GET", filePath, true);
-				req.responseType = "arraybuffer";
+				req.open('GET', filePath, true);
+				req.responseType = 'arraybuffer';
 
 			req.onload = () => {
 				let metadata = {};
 
 				switch (fileType) {
-					case "audio/mp3": {
+					case 'audio/mp3': {
 						metadata = AudioMetadata.id3v2(req.response);
 						break;
 					}
-					case "audio/ogg": {
+					case 'audio/ogg': {
 						metadata = AudioMetadata.ogg(req.response);
 						break;
 					}
@@ -103,28 +108,26 @@
 					}
 					else {
 						$scope.playback.title = fileName;
-						$scope.playback.artist = "";
+						$scope.playback.artist = '';
 					}
-
-					$scope.playback.playing = true;
 				});
 
-				audioObj.play();
-
+				setPlaybackStatus(true);
 				updatePlaybackInfo();
 				spectrumAnalyser();
+				audioObj.play();
 			};
 
 			req.send(null);
-		};
+		}
 
-		const playRandom = () => {
+		function playRandom() {
 			$scope.currPlayIdx = Math.floor(Math.random() * Math.floor($scope.playlist.length));
 
 			playMedia($scope.currPlayIdx);
-		};
+		}
 
-		const spectrumAnalyser = () => {
+		function spectrumAnalyser() {
 			canvasW = canvasEle.width;
 			canvasH = canvasEle.height;
 
@@ -133,40 +136,40 @@
 			analyserBarW = (Math.floor(canvasW / analyserBufr) * 2) - 2;
 
 			analyserRender();
-		};
+		}
 
-		const analyserRender = () => {
+		function analyserRender() {
 			requestAnimationFrame(analyserRender);
 			audioAnl.getByteFrequencyData(analyserData);
 
 			analyserBarX = 1;
-			canvasCtx.fillStyle = "#fff";
+			canvasCtx.fillStyle = '#fff';
 			canvasCtx.fillRect(0, 0, canvasW, canvasH);
 
 			for (let i = 0; i < analyserBufr; i++) {
 				analyserBarH = analyserData[i] / 4;
 
-				canvasCtx.fillStyle = "#333";
+				canvasCtx.fillStyle = '#333';
 				canvasCtx.fillRect(analyserBarX, canvasH - analyserBarH, analyserBarW, analyserBarH);
 
 				analyserBarX += analyserBarW + 1;
 			}
-		};
+		}
 
-		const formatTime = (input) => {
+		function formatTime(input) {
 			const time = Math.round(input);
 			const mins = Math.floor((time % 3600) / 60);
 			const secs = Math.floor(time % 60);
 
-			let output = "";
-				output += String(mins || 0).padStart(2, "0");
-				output += ":";
-				output += String(secs || 0).padStart(2, "0");
+			let output = '';
+				output += String(mins || 0).padStart(2, '0');
+				output += ':';
+				output += String(secs || 0).padStart(2, '0');
 
 			return output;
-		};
+		}
 
-		const updatePlaybackInfo = () => {
+		function updatePlaybackInfo() {
 			$timeout(() => {
 				const played = audioObj.currentTime;
 				const total = audioObj.duration;
@@ -177,59 +180,64 @@
 				$scope.playback.timePlayed = formatTime(played);
 			});
 
-			updateTimer = setTimeout(updatePlaybackInfo, 1000);
-		};
+			updateTimer = setTimeout(updatePlaybackInfo, 500);
+		}
 
-		const setVolume = (newVolume) => {
+		function setVolume(newVolume) {
 			audioObj.volume = newVolume;
 
 			$timeout(() => {
 				$scope.currVolume = newVolume;
-				$scope.volumeImg = "volume-" + ((newVolume > 0.0) ? "on" : "off");
+				$scope.volumeImg = 'volume-' + ((newVolume > 0.0) ? 'on' : 'off');
 				$scope.volumePcnt = (newVolume * 100);
 				$scope.volumeSlider.value = newVolume;
 			});
 
-			localStorage.setItem("volume", newVolume);
+			localStorage.setItem('volume', newVolume);
 		}
 
-		const fadePause = (mode) => {
-			let oldVolume = $scope.currVolume;
+		function fadePause(volume) {
 			let newVolume = 0;
+			let finished = false;
 
-			if (mode) {
+			if ($scope.playback.playing) {
+				if (volume == 0.0) {
+					finished = true;
 
-			}
-			else {
-				if ($scope.currVolume == 0.0) {
 					audioObj.pause();
-
-					$timeout(function() {
-						$scope.playback.playing = false;
-					});
-
-					return;
 				}
 				else {
-					newVolume = parseFloat((oldVolume - 0.1).toFixed(1));
+					newVolume = parseFloat((volume - 0.1).toFixed(1));
+				}
+			}
+			else {
+				if (volume == volBeforeFade) {
+					finished = true;
+
+					audioObj.play();
+				}
+				else {
+					newVolume = parseFloat((volume + 0.1).toFixed(1));
 				}
 			}
 
-			setVolume(newVolume);
+			if (finished) {
+				setPlaybackStatus(!$scope.playback.playing);
+			}
+			else {
+				setVolume(newVolume);
 
-			setTimeout(function() {
-				fadePause(mode);
-			}, 100);
-		};
+				setTimeout(() => {
+					fadePause(newVolume);
+				}, 100);
+			}
+		}
 
 		$scope.seekerChanged = () => {
 			$scope.togglePlayback(false, true);
 			clearTimeout(updateTimer);
 			clearTimeout(seekerDelay);
-
-			$timeout(() => {
-				$scope.playback.playing = false;
-			});
+			setPlaybackStatus(false);
 
 			audioObj.currentTime = $scope.playback.time;
 
@@ -242,7 +250,7 @@
 		$scope.openFile = (playFile) => {
 			playOpenedFile = playFile;
 
-			document.getElementById("openFile").click();
+			document.getElementById('openFile').click();
 		};
 
 		$scope.loadFiles = (files) => {
@@ -263,22 +271,23 @@
 			}
 
 			if (play || !$scope.playback.playing) {
-				audioObj.play();
-
-				$timeout(() => {
-					$scope.playback.playing = true;
-				});
+				if ($scope.settings.fade_on_pause) {
+					fadePause(0);
+				}
+				else {
+					audioObj.play();
+					setPlaybackStatus(true);
+				}
 			}
 			else {
-				if (fadeOnPause) {
-					fadePause(false);
+				if ($scope.settings.fade_on_pause) {
+					volBeforeFade = $scope.currVolume;
+
+					fadePause($scope.currVolume);
 				}
 				else {
 					audioObj.pause();
-
-					$timeout(() => {
-						$scope.playback.playing = false;
-					});
+					setPlaybackStatus(false);
 				}
 			}
 		};
@@ -288,12 +297,12 @@
 			audioObj.currentTime = 0;
 
 			updatePlaybackInfo();
+			setPlaybackStatus(false);
 			clearTimeout(updateTimer);
 
 			$timeout(() => {
-				$scope.playback.playing = false;
-				$scope.playback.timePlayed = "00:00";
-				$scope.playback.timeTotal = "00:00";
+				$scope.playback.timePlayed = '00:00';
+				$scope.playback.timeTotal = '00:00';
 			});
 		};
 
@@ -319,7 +328,7 @@
 			}
 		};
 
-		$scope.toggleMute = function() {
+		$scope.toggleMute = () => {
 			if ($scope.currVolume > 0.0) {
 				volBeforeMute = $scope.currVolume;
 
@@ -342,27 +351,15 @@
 			$scope.randomOrder = !$scope.randomOrder;
 		};
 
-		$scope.exitApp = () => {
-			ipc.send("exitApp");
-		};
-
 		$scope.clearPlaylist = () => {
 			$scope.playlist.length = 0;
 		};
 
-		document.addEventListener("drop", (event) => {
-			event.preventDefault();
-			event.stopPropagation();
-
-			addToPlaylist(event.dataTransfer.files)
+		$scope.$on('settingsChanged', (event, data) => {
+			$scope.settings = data;
 		});
 
-		document.addEventListener("dragover", (event) => {
-			event.preventDefault();
-			event.stopPropagation();
-		});
-
-		document.getElementById("volumeSlider").addEventListener("wheel", (event) => {
+		document.getElementById('volumeSlider').addEventListener('wheel', (event) => {
 			let oldVolume = audioObj.volume;
 			let newVolume = oldVolume;
 
@@ -378,16 +375,21 @@
 			if (newVolume != oldVolume)
 				setVolume(newVolume);
 		});
-/*
-		document.addEventListener('dragenter', (event) => {
-			console.log('drag enter');
+
+		document.addEventListener('drop', (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			addToPlaylist(event.dataTransfer.files)
 		});
 
-		document.addEventListener('dragleave', (event) => {
-			console.log('drag leave');
+		document.addEventListener('dragover', (event) => {
+			event.preventDefault();
+			event.stopPropagation();
 		});
-*/
-		audioObj.addEventListener("ended", () => {
+
+		audioObj.addEventListener('ended', () => {
+			setPlaybackStatus(false);
+
 			setTimeout(() => {
 				if ($scope.playlist.length > 1) {
 					if ($scope.randomOrder) {
@@ -406,13 +408,13 @@
 				else if ($scope.playback.loop) {
 					playMedia($scope.currPlayIdx);
 				}
-			}, nextTrackDelay);
+			}, $scope.settings.track_delay * 1000);
 		});
 
 		audioAnl.fftSize = 64;
 		canvasEle.width = 100;
-		canvasEle.height = 56;
-		canvasEle.style.display = "initial";
+		canvasEle.height = 50;
+		canvasEle.style.display = 'initial';
 
 		audioSrc.connect(audioAnl);
 		audioAnl.connect(audioCtx.destination);

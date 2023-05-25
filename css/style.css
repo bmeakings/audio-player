@@ -21,6 +21,7 @@ main.flex {
 #playerArea > md-card-title > md-card-title-text > .md-headline {
 	font-size: 18px;
 	line-height: 24px;
+	padding-right: 10px;
 }
 #playerArea > md-card-title > md-card-title-text > .md-subhead {
 	padding-top: 0px;
@@ -68,11 +69,12 @@ main.flex {
 #playbackSlider {
 	display: inline-block;
 	width: calc(100% - 120px);
-	margin: 0px 0px 0px 10px;
+	height: 32px;
 }
 #volumeSlider {
 	width: 50px;
 	min-width: initial;
+	height: initial;
 	margin: 0px 0px 0px 16px;
 	vertical-align: middle;
 	float: left;
@@ -82,7 +84,7 @@ main.flex {
 	width: 100px;
 	height: 16px;
 	margin: 0px;
-	padding: 16px 0px;
+	padding: 14px 0px;
 	font-size: 14px;
 	text-align: right;
 }
@@ -100,15 +102,16 @@ main.flex {
 #playlistArea > md-card-content {
 	padding: 10px;
 }
+#playlistMenu, #playlistBtnArea {
+	height: 120px;
+}
 #playlistMenu {
 	float: left;
 	width: calc(100% - 34px);
-	height: 120px;
 }
 #playlistBtnArea {
 	float: right;
 	width: 24px;
-	height: 120px;
 }
 #playlistBtnArea > button {
 	margin: 0px 0px 10px;

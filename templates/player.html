@@ -4,8 +4,8 @@
 		<md-card id="playerArea">
 			<md-card-title>
 				<md-card-title-text class="md-truncate">
-					<span class="md-headline md-truncate" title="{{playback.title}}">{{playback.title}}</span>
-					<span class="md-subhead md-truncate">{{playback.artist}}</span>
+					<div class="md-headline md-truncate" title="{{ playback.title }}">{{playback.title}}</div>
+					<span class="md-subhead md-truncate">{{ playback.artist }}</span>
 				</md-card-title-text>
 				<md-card-title-media>
 					<md-card>
@@ -16,17 +16,17 @@
 			<md-card-content>
 				<md-slider
 					id="playbackSlider"
-					min="0"
-					max="{{playback.duration}}"
-					ng-model="playback.time"
 					class="md-primary"
-					ng-change="seekerChanged()"
+					min="0"
+					max="{{ playback.duration }}"
 					aria-label="Seeker"
+					ng-model="playback.time"
+					ng-change="seekerChanged()"
 				></md-slider>
 				<div id="playbackTimes">
-					<span>{{playback.timePlayed}}</span>
+					<span>{{ playback.timePlayed }}</span>
 					<span> / </span>
-					<span>{{playback.timeTotal}}</span>
+					<span>{{ playback.timeTotal }}</span>
 				</div>
 			</md-card-content>
 		</md-card>
@@ -37,9 +37,9 @@
 			<!-- open file -->
 			<md-button
 				class="md-fab md-raised md-mini"
-				ng-click="openFile(true)"
-				title="{{$parent.langStrings.open_file}}..."
+				title="{{ $parent.langStrings.open_file }}"
 				aria-label="Open"
+				ng-click="openFile(true)"
 			>
 				<md-icon md-svg-src="./imgs/music.svg"></md-icon>
 			</md-button>
@@ -47,10 +47,10 @@
 			<!-- stop -->
 			<md-button
 				class="md-fab md-raised md-mini"
+				title="{{ $parent.langStrings.stop }}"
+				aria-label="Stop"
 				ng-click="stopPlayback()"
 				ng-disabled="playlist.length == 0 && !playback.playing"
-				title="{{$parent.langStrings.stop}}"
-				aria-label="Stop"
 			>
 				<md-icon md-svg-src="./imgs/stop.svg"></md-icon>
 			</md-button>
@@ -58,21 +58,21 @@
 			<!-- play / pause -->
 			<md-button
 				class="md-fab md-raised md-mini"
+				title="{{ $parent.langStrings.play_pause }}"
+				aria-label="Play"
 				ng-click="togglePlayback()"
 				ng-disabled="playlist.length == 0"
-				title="{{$parent.langStrings.play_pause}}"
-				aria-label="Play"
 			>
-				<md-icon md-svg-src="./imgs/{{(playback.playing) ? 'pause' : 'play'}}.svg"></md-icon>
+				<md-icon md-svg-src="./imgs/{{ (playback.playing) ? 'pause' : 'play' }}.svg"></md-icon>
 			</md-button>
 
 			<!-- prev -->
 			<md-button
 				class="md-fab md-raised md-mini"
+				title="{{ $parent.langStrings.prev_track }}"
+				aria-label="Previous"
 				ng-click="prevTrack()"
 				ng-disabled="playlist.length < 2"
-				title="{{$parent.langStrings.prev_track}}"
-				aria-label="Previous"
 			>
 				<md-icon md-svg-src="./imgs/skip-prev.svg"></md-icon>
 			</md-button>
@@ -80,10 +80,10 @@
 			<!-- next -->
 			<md-button
 				class="md-fab md-raised md-mini"
+				title="{{ $parent.langStrings.next_track }}"
+				aria-label="Next"
 				ng-click="nextTrack()"
 				ng-disabled="playlist.length < 2"
-				title="{{$parent.langStrings.next_track}}"
-				aria-label="Next"
 			>
 				<md-icon md-svg-src="./imgs/skip-next.svg"></md-icon>
 			</md-button>
@@ -91,33 +91,33 @@
 			<!-- loop -->
 			<md-button
 				class="md-fab md-raised md-mini"
+				title="{{ $parent.langStrings.loop }}"
+				aria-label="Loop"
 				ng-class="{'md-primary': playback.loop}"
 				ng-click="loopPlayback()"
-				title="{{$parent.langStrings.loop}}"
-				aria-label="Loop"
 			>
-				<md-icon md-svg-src="./imgs/loop-{{(playback.loop) ? 'on' : 'off'}}.svg"></md-icon>
+				<md-icon md-svg-src="./imgs/loop-{{ (playback.loop) ? 'on' : 'off' }}.svg"></md-icon>
 			</md-button>
 
 			<!-- volume -->
-			<span id="volumeBtn" title="{{$parent.langStrings.volume}}: {{volumePcnt}}%">
+			<span id="volumeBtn" title="{{ $parent.langStrings.volume }}: {{ volumePcnt }}%">
 				<md-button
 					class="md-fab md-raised md-mini"
+					aria-label="Mute"
 					ng-class="{'md-primary': currVolume == 0.0}"
 					ng-click="toggleMute()"
-					aria-label="Mute"
 				>
-					<md-icon md-svg-src="./imgs/{{volumeImg}}.svg"></md-icon>
+					<md-icon md-svg-src="./imgs/{{ volumeImg }}.svg"></md-icon>
 				</md-button>
 				<md-slider
 					id="volumeSlider"
+					class="md-primary"
 					min="0.0"
 					max="1.0"
 					step="0.1"
-					class="md-primary"
+					aria-label="Volume"
 					ng-model="volumeSlider.value"
 					ng-change="changeVolume()"
-					aria-label="Volume"
 				></md-slider>
 			</span>
 
@@ -125,9 +125,9 @@
 			<md-button
 				id="settingsBtn"
 				class="md-fab md-raised md-mini"
-				ng-click="$parent.openSettings()"
-				title="{{$parent.langStrings.settings}}"
+				title="{{ $parent.langStrings.settings }}"
 				aria-label="Settings"
+				ng-click="$parent.openSettings()"
 			>
 				<md-icon md-svg-src="./imgs/cog.svg"></md-icon>
 			</md-button>
@@ -143,31 +143,31 @@
 						ng-repeat="opt in playlist"
 						ng-dblclick="changeTrack($index, opt.name)"
 						ng-selected="$index == currPlayIdx"
-					>{{opt.name}}</option>
+					>{{ opt.name }}</option>
 				</select>
 				<div id="playlistBtnArea" class="buttonArea">
 					<md-button
 						class="md-fab md-raised md-mini"
-						title="{{$parent.langStrings.playlist_add}}..."
-						ng-click="openFile(false)"
+						title="{{ $parent.langStrings.playlist_add }}..."
 						aria-label="Add"
+						ng-click="openFile(false)"
 					>
 						<md-icon md-svg-src="./imgs/plus.svg"></md-icon>
 					</md-button>
 					<md-button
 						class="md-fab md-raised md-mini"
-						title="{{$parent.langStrings.playlist_shuffle}}"
-						ng-click="shufflePlaylist()"
-						ng-class="{'md-primary': randomOrder}"
+						title="{{ $parent.langStrings.playlist_shuffle }}"
 						aria-label="Shuffle"
+						ng-class="{'md-primary': randomOrder}"
+						ng-click="shufflePlaylist()"
 					>
-						<md-icon md-svg-src="./imgs/shuffle-{{(randomOrder) ? 'on' : 'off'}}.svg"></md-icon>
+						<md-icon md-svg-src="./imgs/shuffle-{{ (randomOrder) ? 'on' : 'off' }}.svg"></md-icon>
 					</md-button>
 					<md-button
 						class="md-fab md-raised md-mini"
-						title="{{$parent.langStrings.playlist_clear}}"
-						ng-click="clearPlaylist()"
+						title="{{ $parent.langStrings.playlist_clear }}"
 						aria-label="Clear"
+						ng-click="clearPlaylist()"
 					>
 						<md-icon md-svg-src="./imgs/trash.svg"></md-icon>
 					</md-button>
@@ -180,8 +180,8 @@
 				type="file"
 				accept="audio/*"
 				multiple="multiple"
-				ng-model="openFiles"
 				on-file-change="loadFiles"
+				ng-model="openFiles"
 			/>
 		</form>
 	</md-content>

@@ -1,22 +1,19 @@
-"use strict";
+'use strict';
 
-const appName = "MediaPlayer";
-const appUpdateID = "mediaplayer";
-const ipc = require("electron").ipcRenderer;
+const appName = 'AudioPlayer';
 
 (angular
-	.module(appName, ["ngMaterial"])
-	.controller("MainCtrl", function($scope, $http)
-	{
-		const savedLang = localStorage.getItem("language");
+	.module(appName, ['ngMaterial'])
+	.controller('MainCtrl', ($scope, $http) => {
+		const savedSettings = JSON.parse(localStorage.getItem('settings') || '{}');
 
 		$scope.settingsOpen = false;
-		$scope.currLang = savedLang || "en";
+		$scope.currLang = (savedSettings.language || 'en');
 		$scope.langStrings = {};
 
 		$scope.setLanguage = (lang) => {
 			($http
-				.get("./l10n/" + lang + ".json")
+				.get('./l10n/' + lang + '.json')
 				.then((response) => {
 					try {
 						$scope.langStrings = response.data;

@@ -1,39 +1,36 @@
-"use strict";
+'use strict';
 
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const path = require('path');
 
-let win = null;
+let appWindow = null;
 
-function createAppWindow()
-{
-	win = new BrowserWindow({
+function createAppWindow() {
+	appWindow = new BrowserWindow({
 		show: false,
 		width: 420,
-		height: 380,
+		height: 360,
 		minWidth: 420,
 		minHeight: 380,
 		webPreferences: {
+			preload: path.join(__dirname, 'preload.js'),
 			nodeIntegration: true,
-			contextIsolation: false,
 		},
 	});
 
-	win.loadFile("index.html");
-	win.webContents.openDevTools({mode: "detach"});
+	appWindow.loadFile('index.html');
+	appWindow.webContents.openDevTools({mode: 'detach'});
 
-	win.once("ready-to-show", function()
-	{
-		win.show();
+	appWindow.once('ready-to-show', () => {
+		appWindow.show();
 	});
 
-	win.on("closed", function()
-	{
-		win = null;
+	appWindow.on('closed', () => {
+		appWindow = null;
 	});
 }
 
-function createAppMenu()
-{
+function createAppMenu() {
 	let menu = null;
 	let menuTemplate = [];
 
@@ -42,18 +39,37 @@ function createAppMenu()
 	Menu.setApplicationMenu(menu);
 }
 
-app.on("ready", function()
-{
+app.whenReady().then(() => {
+	ipcMain.on('window-title', (event, title) => {
+		const webContents = event.sender;
+		const win = BrowserWindow.fromWebContents(webContents);
+
+		win.setTitle(title);
+	});
+
+	ipcMain.on('resize-window', (event, width, height) => {
+		appWindow.setSize(width, height);
+	});
+
+	ipcMain.on('centre-window', (event) => {
+		appWindow.center();
+	});
+
+	ipcMain.on('set-full-screen', (event, fs) => {
+		const webContents = event.sender;
+		const win = BrowserWindow.fromWebContents(webContents);
+
+		win.setFullScreen(fs);
+	});
+
+	ipcMain.on('exit-app', () => {
+		appWindow.close();
+	});
+
 	createAppWindow();
 	createAppMenu();
 });
 
-app.on("window-all-closed", function()
-{
+app.on('window-all-closed', () => {
 	app.quit();
-});
-
-ipcMain.on("exitApp", function()
-{
-	win.close();
 });
