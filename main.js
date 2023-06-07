@@ -8,17 +8,16 @@ let appWindow = null;
 function createAppWindow() {
 	appWindow = new BrowserWindow({
 		show: false,
-		width: 420,
+		width: 400,
 		height: 360,
-		minWidth: 420,
-		minHeight: 380,
+		minWidth: 400,
+		minHeight: 360,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
-			nodeIntegration: true,
 		},
 	});
 
-	appWindow.loadFile('index.html');
+	appWindow.loadFile(path.join(__dirname, 'index.html'));
 	appWindow.webContents.openDevTools({mode: 'detach'});
 
 	appWindow.once('ready-to-show', () => {

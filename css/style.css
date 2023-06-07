@@ -120,27 +120,3 @@ main.flex {
 #playlistBtnArea > button:last-child {
 	margin-bottom: 0px;
 }
-#settingsArea {
-	position: absolute;
-	top: 48px;
-	bottom: 0px;
-	width: 100%;
-}
-#settingsArea .layout-row {
-	margin-bottom: 10px;
-}
-#settingsArea md-input-container {
-	margin-top: 0px;
-}
-#settingsArea md-input-container:last-child {
-	margin-bottom: 0px;
-}
-#settingsArea md-input-container > span {
-	vertical-align: sub;
-}
-#settingsArea md-input-container > md-select {
-	float: right;
-}
-#settingsArea md-input-container > input {
-	float: right;
-}

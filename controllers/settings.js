@@ -31,13 +31,13 @@
 				})
 			);
 		}
-
-		$scope.langChanged = function() {
+/*
+		$scope.langChanged = () => {
 			const newLang = $scope.settings.language;
 
 			$scope.$parent.setLanguage(newLang);
 		};
-
+*/
 		$scope.$watchCollection('settings', () => {
 			localStorage.setItem('settings', JSON.stringify($scope.settings));
 			$rootScope.$broadcast('settingsChanged', $scope.settings);
