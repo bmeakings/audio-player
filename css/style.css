@@ -37,6 +37,7 @@ main.flex {
 	background-color: #fff;
 }
 #playerArea > md-card-content {
+	text-align: center;
 	padding-bottom: 0px;
 }
 #playButtonsArea {
@@ -66,6 +67,20 @@ main.flex {
 #openFileForm {
 	display: none;
 }
+#timePlayed, #timeTotal {
+	width: 50px;
+	height: 16px;
+	margin: 0px;
+	padding: 14px 0px;
+	font-size: 14px;
+	text-align: center;
+}
+#timePlayed {
+	float: left;
+}
+#timeTotal {
+	float: right;
+}
 #playbackSlider {
 	display: inline-block;
 	width: calc(100% - 120px);
@@ -78,15 +93,6 @@ main.flex {
 	margin: 0px 0px 0px 16px;
 	vertical-align: middle;
 	float: left;
-}
-#playbackTimes {
-	float: right;
-	width: 100px;
-	height: 16px;
-	margin: 0px;
-	padding: 14px 0px;
-	font-size: 14px;
-	text-align: right;
 }
 .volumeMuted {
 	background-color: #d00 !important;

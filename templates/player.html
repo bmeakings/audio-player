@@ -14,6 +14,7 @@
 				</md-card-title-media>
 			</md-card-title>
 			<md-card-content>
+				<div id="timePlayed">{{ playback.timePlayed }}</div>
 				<md-slider
 					id="playbackSlider"
 					class="md-primary"
@@ -23,11 +24,7 @@
 					ng-model="playback.time"
 					ng-change="seekerChanged()"
 				></md-slider>
-				<div id="playbackTimes">
-					<span>{{ playback.timePlayed }}</span>
-					<span> / </span>
-					<span>{{ playback.timeTotal }}</span>
-				</div>
+				<div id="timeTotal">{{ playback.timeTotal }}</div>
 			</md-card-content>
 		</md-card>
 

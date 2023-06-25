@@ -114,7 +114,7 @@
 
 				setPlaybackStatus(true);
 				updatePlaybackInfo();
-				spectrumAnalyser();
+				// spectrumAnalyser();
 				audioObj.play();
 			};
 
@@ -418,6 +418,7 @@
 
 		audioSrc.connect(audioAnl);
 		audioAnl.connect(audioCtx.destination);
+		spectrumAnalyser();
 		setVolume($scope.currVolume);
 	})
 );
