@@ -114,7 +114,6 @@
 
 				setPlaybackStatus(true);
 				updatePlaybackInfo();
-				// spectrumAnalyser();
 				audioObj.play();
 			};
 
@@ -416,8 +415,8 @@
 		canvasEle.height = 50;
 		canvasEle.style.display = 'initial';
 
-		audioSrc.connect(audioAnl);
 		audioAnl.connect(audioCtx.destination);
+		audioSrc.connect(audioAnl);
 		spectrumAnalyser();
 		setVolume($scope.currVolume);
 	})
