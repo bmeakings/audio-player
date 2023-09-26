@@ -6,6 +6,9 @@ html, body {
 .clearfix {
 	clear: both;
 }
+md-checkbox .md-label {
+	margin-top: 12px;
+}
 #playerPage md-card {
 	background-color: #ddd;
 }
@@ -125,4 +128,13 @@ main.flex {
 }
 #playlistBtnArea > button:last-child {
 	margin-bottom: 0px;
+}
+#settingsCard > md-card-content > md-checkbox {
+	width: 100%;
+}
+#settingsCard > md-card-content > div.layout-row {
+	padding: 8px 3px 15px 0px;
+}
+#settingsCard > md-card-content > div.layout-row > md-select {
+	height: 25px;
 }
