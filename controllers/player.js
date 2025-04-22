@@ -74,8 +74,8 @@
 
 			const file = $scope.playlist[$scope.currPlayIdx];
 			const fileName = file.name;
-			const filePath = file.path;
 			const fileType = file.type;
+			const filePath = electronAPI.getFilePath(file);
 
 			const req = new XMLHttpRequest();
 				req.open('GET', filePath, true);
