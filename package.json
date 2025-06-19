@@ -6,14 +6,15 @@
   "repository": "",
   "version": "0.0.1",
   "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "devDependencies": {},
-  "dependencies": {},
   "build": {
     "appId": "com.github.bmeakings.audioplayer",
     "productName": "audio-player",
     "copyright": "Copyright © Ben Meakings"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "music-metadata": "^11.0.0"
   }
 }

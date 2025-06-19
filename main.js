@@ -2,6 +2,7 @@
 
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const musicMetadata = require('music-metadata');
 
 let appWindow = null;
 
@@ -59,6 +60,10 @@ app.whenReady().then(() => {
 		const win = BrowserWindow.fromWebContents(webContents);
 
 		win.setFullScreen(fs);
+	});
+
+	ipcMain.handle('get-music-metadata', (event, file) => {
+		return musicMetadata.parseFile(file);
 	});
 
 	ipcMain.on('exit-app', () => {

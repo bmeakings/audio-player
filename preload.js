@@ -6,6 +6,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
 	getFilePath(file) {
 		return webUtils.getPathForFile(file);
 	},
+	getMusicMetadata(file) {
+		return ipcRenderer.invoke('get-music-metadata', file);
+	},
 	windowTitle(title) {
 		ipcRenderer.send('window-title', title);
 	},

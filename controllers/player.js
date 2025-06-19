@@ -56,7 +56,7 @@
 			});
 		}
 
-		function addToPlaylist(files) {
+		function addToPlaylist(files, openedFile) {
 			const playlistEmpty = ($scope.playlist.length == 0);
 
 			for (const f of files)
@@ -65,10 +65,12 @@
 			newPlaylist = true;
 
 			if (!$scope.playback.playing && playlistEmpty && playOpenedFile)
-				playMedia(0);
+				playMedia(0, 'addToPlaylist');
 		}
 
-		function playMedia(index) {
+		function playMedia(index, caller) {
+			console.log('playMedia', index, caller);
+
 			newPlaylist = false;
 			$scope.currPlayIdx = index;
 
@@ -77,53 +79,50 @@
 			const fileType = file.type;
 			const filePath = electronAPI.getFilePath(file);
 
-			const req = new XMLHttpRequest();
-				req.open('GET', filePath, true);
-				req.responseType = 'arraybuffer';
+			(electronAPI.getMusicMetadata(filePath)
+				.then((data) => {
+					console.log('*** metadata ***');
+					console.log(data);
 
-			req.onload = () => {
-				let metadata = {};
+					const coverArt = {format: '', dataURI: ''};
 
-				switch (fileType) {
-					case 'audio/mp3': {
-						metadata = AudioMetadata.id3v2(req.response);
-						break;
-					}
-					case 'audio/ogg': {
-						metadata = AudioMetadata.ogg(req.response);
-						break;
-					}
-					default: {
-						metadata = null;
-						break;
-					}
-				}
+					if (data.common.picture) {
+						const artImg = data.common.picture[0];
 
-				audioObj.src = filePath;
+						coverArt.format = artImg.format;
+						coverArt.dataURI += 'data:' + coverArt.format + ';base64,';
+						coverArt.dataURI += btoa(String.fromCharCode.apply(null, artImg.data));
 
-				$timeout(() => {
-					if (metadata) {
-						$scope.playback.title = metadata.title;
-						$scope.playback.artist = metadata.artist;
+						console.log(coverArt);
 					}
-					else {
+
+					$timeout(() => {
+						$scope.playback.title = (data.common.title || fileName);
+						$scope.playback.artist = (data.common.artist || '');
+					});
+				})
+				.catch((e) => {
+					console.log(e);
+
+					$timeout(() => {
 						$scope.playback.title = fileName;
 						$scope.playback.artist = '';
-					}
-				});
+					});
+				})
+				.finally(() => {
+					audioObj.src = filePath;
 
-				setPlaybackStatus(true);
-				updatePlaybackInfo();
-				audioObj.play();
-			};
-
-			req.send(null);
+					setPlaybackStatus(true);
+					updatePlaybackInfo();
+					audioObj.play();
+				})
+			);
 		}
 
 		function playRandom() {
 			$scope.currPlayIdx = Math.floor(Math.random() * Math.floor($scope.playlist.length));
 
-			playMedia($scope.currPlayIdx);
+			playMedia($scope.currPlayIdx, 'playRandom');
 		}
 
 		function spectrumAnalyser() {
@@ -253,10 +252,10 @@
 		};
 
 		$scope.loadFiles = (files) => {
-			addToPlaylist(files);
+			addToPlaylist(files, true);
 
-			if (playOpenedFile)
-				playMedia($scope.playlist.length - 1);
+			// if (playOpenedFile)
+			// 	playMedia($scope.playlist.length - 1, 'loadFiles');
 		};
 
 		$scope.togglePlayback = (play, seek) => {
@@ -264,7 +263,7 @@
 				if ($scope.randomOrder)
 					playRandom();
 				else
-					playMedia(0);
+					playMedia(0, 'togglePlayback');
 
 				return;
 			}
@@ -314,7 +313,7 @@
 				$scope.currPlayIdx++;
 
 				$scope.stopPlayback();
-				playMedia($scope.currPlayIdx);
+				playMedia($scope.currPlayIdx, 'nextTrack');
 			}
 		};
 
@@ -323,7 +322,7 @@
 				$scope.currPlayIdx--;
 
 				$scope.stopPlayback();
-				playMedia($scope.currPlayIdx);
+				playMedia($scope.currPlayIdx, 'prevTrack');
 			}
 		};
 
@@ -343,7 +342,7 @@
 		};
 
 		$scope.changeTrack = (index) => {
-			playMedia(index);
+			playMedia(index, 'changeTrack');
 		};
 
 		$scope.shufflePlaylist = () => {
@@ -397,7 +396,7 @@
 					else {
 						if ($scope.currPlayIdx == ($scope.playlist.length - 1)) {
 							if ($scope.playback.loop)
-								playMedia(0);
+								playMedia(0, 'looped 1');
 						}
 						else {
 							$scope.nextTrack();
@@ -405,7 +404,7 @@
 					}
 				}
 				else if ($scope.playback.loop) {
-					playMedia($scope.currPlayIdx);
+					playMedia($scope.currPlayIdx, 'looped 2');
 				}
 			}, $scope.settings.track_delay * 1000);
 		});
