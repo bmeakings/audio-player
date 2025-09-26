@@ -19,7 +19,10 @@ main.flex {
 	overflow-y: auto;
 }
 #playerArea > md-card-title {
-	padding: 10px 10px 0px;
+	padding: 10px;
+}
+#playerArea > md-card-title > md-card-title-text {
+	position: relative;
 }
 #playerArea > md-card-title > md-card-title-text > .md-headline {
 	font-size: 18px;
@@ -35,13 +38,34 @@ main.flex {
 #playerArea > md-card-title > md-card-title-media > md-card {
 	margin: 0px;
 }
-#visualiserCvs {
-	display: none;
-	background-color: #fff;
-}
 #playerArea > md-card-content {
 	text-align: center;
 	padding-bottom: 0px;
+}
+#visualiserArea {
+	position: relative;
+	min-height: 100px;
+}
+#visualiserArea.visible {
+	min-width: 100px;
+	margin-left: 10px !important;
+}
+#visualiserCvs, #coverArtImg {
+	display: block;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	width: 100%;
+}
+#visualiserCvs {
+	background-color: #fff;
+	z-index: 20;
+}
+#visualiserCvs.coverArt {
+	filter: opacity(0.2);
+}
+#coverArtImg {
+	z-index: 10;
 }
 #playButtonsArea {
 	display: block;
@@ -70,11 +94,19 @@ main.flex {
 #openFileForm {
 	display: none;
 }
+#playbackArea {
+	padding-right: 130px;
+}
+#trackTimeArea {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
 #timePlayed, #timeTotal {
 	width: 50px;
 	height: 16px;
-	margin: 0px;
-	padding: 14px 0px;
+	margin: 0px 0px -10px 0px;
+	padding: 0px;
 	font-size: 14px;
 	text-align: center;
 }
@@ -86,11 +118,12 @@ main.flex {
 }
 #playbackSlider {
 	display: inline-block;
-	width: calc(100% - 120px);
+	width: calc(100% - 20px);
 	height: 32px;
+	margin: 0px 10px;
 }
 #volumeSlider {
-	width: 50px;
+	width: 80px;
 	min-width: initial;
 	height: initial;
 	margin: 0px 0px 0px 16px;

@@ -3,6 +3,7 @@
 (angular
 	.module(appName)
 	.controller('PlayerCtrl', ($scope, $timeout) => {
+		const savedSettings = JSON.parse(localStorage.getItem('settings') || '{}');
 		const savedVolume = localStorage.getItem('volume');
 		const audioObj = new Audio();
 		const audioCtx = new AudioContext();
@@ -24,13 +25,16 @@
 		let canvasH = 0;
 		let playOpenedFile = false;
 		let newPlaylist = false;
+		let ctrlKeyDown = false;
+		let shiftKeyDown = false;
+		let altKeyDown = false;
 
-		$scope.settings = {};
-		$scope.currVolume = parseFloat(savedVolume) || 0.5;
+		$scope.settings = savedSettings;
 		$scope.settingsOpen = false;
 		$scope.appVersion = '0.0.1';
-		$scope.volumeImg = '';
 		$scope.shuffleImg = 'shuffle';
+		$scope.volumeImg = '';
+		$scope.currVolume = parseFloat(savedVolume) || 0.5;
 		$scope.volumePcnt = 0;
 		$scope.openFiles = '';
 		$scope.currPlayIdx = 0;
@@ -38,6 +42,7 @@
 		$scope.currTrack = '';
 		$scope.volumeSlider = {'value': 0.0};
 		$scope.randomOrder = false;
+		$scope.coverArtImg = '';
 
 		$scope.playback = {
 			'title': '',
@@ -73,6 +78,7 @@
 
 			newPlaylist = false;
 			$scope.currPlayIdx = index;
+			$scope.coverArtImg = '';
 
 			const file = $scope.playlist[$scope.currPlayIdx];
 			const fileName = file.name;
@@ -93,7 +99,7 @@
 						coverArt.dataURI += 'data:' + coverArt.format + ';base64,';
 						coverArt.dataURI += btoa(String.fromCharCode.apply(null, artImg.data));
 
-						console.log(coverArt);
+						$scope.coverArtImg = coverArt.dataURI;
 					}
 
 					$timeout(() => {
@@ -194,6 +200,29 @@
 			localStorage.setItem('volume', newVolume);
 		}
 
+		function incrementVolume(action) {
+			let oldVolume = audioObj.volume;
+			let newVolume = oldVolume;
+
+			switch (action) {
+				case '-': {
+					if (oldVolume > 0.0)
+						newVolume = parseFloat((oldVolume - 0.1).toFixed(1));
+
+					break;
+				}
+				case '+': {
+					if (oldVolume < 1.0)
+						newVolume = parseFloat((oldVolume + 0.1).toFixed(1));
+
+					break;
+				}
+			}
+
+			if (newVolume != oldVolume)
+				setVolume(newVolume);
+		}
+
 		function fadePause(volume) {
 			let newVolume = 0;
 			let finished = false;
@@ -248,17 +277,23 @@
 		$scope.openFile = (playFile) => {
 			playOpenedFile = playFile;
 
+			document.getElementById('openBtn').blur();
 			document.getElementById('openFile').click();
 		};
 
 		$scope.loadFiles = (files) => {
 			addToPlaylist(files, true);
 
-			// if (playOpenedFile)
-			// 	playMedia($scope.playlist.length - 1, 'loadFiles');
+			if (playOpenedFile) {
+				playOpenedFile = false;
+
+				playMedia($scope.playlist.length - 1, 'loadFiles');
+			}
 		};
 
 		$scope.togglePlayback = (play, seek) => {
+			document.getElementById('pauseBtn').blur();
+
 			if (newPlaylist && $scope.playlist.length > 0) {
 				if ($scope.randomOrder)
 					playRandom();
@@ -291,6 +326,7 @@
 		};
 
 		$scope.stopPlayback = () => {
+			document.getElementById('stopBtn').blur();
 			audioObj.pause();
 			audioObj.currentTime = 0;
 
@@ -306,9 +342,13 @@
 
 		$scope.loopPlayback = () => {
 			$scope.playback.loop = !$scope.playback.loop;
+
+			document.getElementById('loopBtn').blur();
 		};
 
 		$scope.nextTrack = () => {
+			document.getElementById('nextBtn').blur();
+
 			if ($scope.currPlayIdx < ($scope.playlist.length - 1)) {
 				$scope.currPlayIdx++;
 
@@ -318,6 +358,8 @@
 		};
 
 		$scope.prevTrack = () => {
+			document.getElementById('prevBtn').blur();
+
 			if ($scope.currPlayIdx > 0) {
 				$scope.currPlayIdx--;
 
@@ -327,6 +369,8 @@
 		};
 
 		$scope.toggleMute = () => {
+			document.getElementById('muteBtn').blur();
+
 			if ($scope.currVolume > 0.0) {
 				volBeforeMute = $scope.currVolume;
 
@@ -341,7 +385,14 @@
 			setVolume($scope.volumeSlider.value);
 		};
 
+		$scope.trackSelected = () => {
+			const menu = document.getElementById('playlistMenu');
+
+			$scope.currPlayIdx = menu.selectedIndex;
+		};
+
 		$scope.changeTrack = (index) => {
+			document.getElementById('playlistMenu').blur();
 			playMedia(index, 'changeTrack');
 		};
 
@@ -372,6 +423,94 @@
 
 			if (newVolume != oldVolume)
 				setVolume(newVolume);
+		});
+
+		document.getElementById('playlistArea').addEventListener('keyup', (event) => {
+			console.log('key up (playlist)', event.code);
+			document.getElementById('playlistArea').blur();
+			event.stopPropagation();
+
+			switch (event.code) {
+				case 'Enter': case 'NumpadEnter': {
+					playMedia($scope.currPlayIdx, 'playlist');
+					break;
+				}
+				case 'Space': {
+					$scope.togglePlayback();
+					event.preventDefault();
+					break;
+				}
+			}
+		});
+
+		document.addEventListener('keydown', (event) => {
+			console.log('key down', event.code);
+
+			switch (event.code) {
+				case 'ControlLeft': case 'ControlRight': {
+					ctrlKeyDown = true;
+					break;
+				}
+				case 'ShiftLeft': case 'ShiftRight': {
+					shiftKeyDown = true;
+					break;
+				}
+				case 'AltLeft': case 'AltRight': {
+					altKeyDown = true;
+					break;
+				}
+			}
+		});
+
+		document.addEventListener('keyup', (event) => {
+			console.log('key up (window)', event.code);
+
+			switch (event.code) {
+				case 'ControlLeft': case 'ControlRight': {
+					ctrlKeyDown = false;
+					break;
+				}
+				case 'ShiftLeft': case 'ShiftRight': {
+					shiftKeyDown = false;
+					break;
+				}
+				case 'AltLeft': case 'AltRight': {
+					altKeyDown = false;
+					break;
+				}
+				case 'Space': {
+					$scope.togglePlayback();
+					break;
+				}
+				case 'KeyM': {
+					$scope.toggleMute();
+					break;
+				}
+				case 'KeyO': {
+					if (ctrlKeyDown)
+						$scope.openFile(true);
+
+					break;
+				}
+/*
+				case 'ArrowLeft': {
+					$scope.jumpVideoTime('B');
+					break;
+				}
+				case 'ArrowRight': {
+					$scope.jumpVideoTime('F');
+					break;
+				}
+*/
+				case 'ArrowUp': {
+					incrementVolume('+');
+					break;
+				}
+				case 'ArrowDown': {
+					incrementVolume('-');
+					break;
+				}
+			}
 		});
 
 		document.addEventListener('drop', (event) => {
@@ -411,7 +550,7 @@
 
 		audioAnl.fftSize = 64;
 		canvasEle.width = 100;
-		canvasEle.height = 50;
+		canvasEle.height = 100;
 		canvasEle.style.display = 'initial';
 
 		audioAnl.connect(audioCtx.destination);

@@ -9,10 +9,10 @@ let appWindow = null;
 function createAppWindow() {
 	appWindow = new BrowserWindow({
 		show: false,
-		width: 400,
-		height: 360,
-		minWidth: 400,
-		minHeight: 360,
+		width: 420,
+		height: 380,
+		minWidth: 420,
+		minHeight: 380,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 		},

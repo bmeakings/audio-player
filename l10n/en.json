@@ -14,6 +14,8 @@
 	"playlist_shuffle": "Shuffle Playlist",
 	"prev_track": "Previous Track",
 	"settings": "Settings",
+	"show_cover_art": "Show Cover Art",
+	"show_analyser": "Show Spectrum Analyser",
 	"stop": "Stop",
 	"title": "Title",
 	"track_delay": "Delay between tracks in playlist",
