@@ -78,7 +78,7 @@
 
 			newPlaylist = false;
 			$scope.currPlayIdx = index;
-			$scope.coverArtImg = '';
+			$scope.coverArtImg = './imgs/cover-art.jpg';
 
 			const file = $scope.playlist[$scope.currPlayIdx];
 			const fileName = file.name;
@@ -98,13 +98,12 @@
 						coverArt.format = artImg.format;
 						coverArt.dataURI += 'data:' + coverArt.format + ';base64,';
 						coverArt.dataURI += btoa(String.fromCharCode.apply(null, artImg.data));
-
-						$scope.coverArtImg = coverArt.dataURI;
 					}
 
 					$timeout(() => {
 						$scope.playback.title = (data.common.title || fileName);
 						$scope.playback.artist = (data.common.artist || '');
+						$scope.coverArtImg = coverArt.dataURI;
 					});
 				})
 				.catch((e) => {
