@@ -42,7 +42,7 @@
 		$scope.currTrack = '';
 		$scope.volumeSlider = {'value': 0.0};
 		$scope.randomOrder = false;
-		$scope.coverArtImg = '';
+		$scope.coverArtImg = './imgs/cover-art.jpg';
 
 		$scope.playback = {
 			'title': '',
