@@ -11,6 +11,7 @@
 		const audioSrc = audioCtx.createMediaElementSource(audioObj);
 		const canvasEle = document.getElementById('visualiserCvs');
 		const canvasCtx = canvasEle.getContext('2d');
+		const fileInput = document.getElementById('openFileField');
 
 		let updateTimer = null;
 		let seekerDelay = null;
@@ -53,7 +54,7 @@
 			'timePlayed': '00:00',
 			'timeTotal': '00:00',
 			'loop': false,
-		}
+		};
 
 		function setPlaybackStatus(status) {
 			$timeout(() => {
@@ -276,11 +277,17 @@
 		$scope.openFile = (playFile) => {
 			playOpenedFile = playFile;
 
+			if (!playFile && $scope.settings.play_on_add)
+				playOpenedFile = true;
+
 			document.getElementById('openBtn').blur();
-			document.getElementById('openFile').click();
+			fileInput.click();
 		};
 
 		$scope.loadFiles = (files) => {
+			if (!fileInput.files.length)
+				return;
+
 			addToPlaylist(files, true);
 
 			if (playOpenedFile) {
@@ -407,7 +414,7 @@
 			$scope.settings = data;
 		});
 
-		document.getElementById('volumeSlider').addEventListener('wheel', (event) => {
+		document.getElementById('volumeWrapper').addEventListener('wheel', (event) => {
 			let oldVolume = audioObj.volume;
 			let newVolume = oldVolume;
 
@@ -437,6 +444,10 @@
 				case 'Space': {
 					$scope.togglePlayback();
 					event.preventDefault();
+					break;
+				}
+				case 'Delete': {
+
 					break;
 				}
 			}

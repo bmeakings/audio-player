@@ -116,16 +116,17 @@
 			</md-button>
 
 			<!-- volume -->
-			<span id="volumeBtn" title="Toggle Mute (ctrl + M)">
-				<md-button
-					id="muteBtn"
-					class="md-fab md-raised md-mini"
-					aria-label="Mute"
-					ng-class="{'md-primary': currVolume == 0.0}"
-					ng-click="toggleMute()"
-				>
-					<md-icon md-svg-src="./imgs/{{ volumeImg }}.svg"></md-icon>
-				</md-button>
+			<md-button
+				id="muteBtn"
+				class="md-fab md-raised md-mini"
+				title="Toggle Mute (ctrl + M)"
+				aria-label="Mute"
+				ng-class="{'md-primary': currVolume == 0.0}"
+				ng-click="toggleMute()"
+			>
+				<md-icon md-svg-src="./imgs/{{ volumeImg }}.svg"></md-icon>
+			</md-button>
+			<span id="volumeWrapper">
 				<md-slider
 					id="volumeSlider"
 					class="md-primary"
@@ -194,7 +195,7 @@
 		</md-card>
 		<form id="openFileForm">
 			<input
-				id="openFile"
+				id="openFileField"
 				type="file"
 				accept="audio/*"
 				multiple="multiple"
