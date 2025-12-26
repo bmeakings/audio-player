@@ -14,8 +14,11 @@
 	"playlist_shuffle": "随机播放列表",
 	"prev_track": "上一个曲目",
 	"settings": "设定值",
+	"show_cover_art": "显示专辑封面",
+	"show_analyser": "显示频谱分析器",
 	"stop": "停止",
 	"title": "标题",
+	"toggle_mute": "切换静音",
 	"track_delay": "播放列表中曲目之间的延迟",
 	"volume": "卷",
 	"END": ""

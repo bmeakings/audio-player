@@ -14,8 +14,11 @@
 	"playlist_shuffle": "Lista de reproducción aleatoria",
 	"prev_track": "Pista anterior",
 	"settings": "Configuraciones",
+	"show_cover_art": "Mostrar la carátula del álbum",
+	"show_analyser": "Mostrar analizador de espectro",
 	"stop": "Detener",
 	"title": "Título",
+	"toggle_mute": "Activar/desactivar silencio",
 	"track_delay": "Retraso entre pistas en la lista de reproducción",
 	"volume": "Volumen",
 	"END": ""

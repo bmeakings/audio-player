@@ -14,8 +14,11 @@
 	"playlist_shuffle": "셔플 재생 목록",
 	"prev_track": "이전 트랙",
 	"settings": "설정",
+	"show_cover_art": "앨범 아트 보기",
+	"show_analyser": "스펙트럼 분석기 보기",
 	"stop": "중지",
 	"title": "표제",
+	"toggle_mute": "음소거 / 음소거 해제",
 	"track_delay": "재생 목록의 트랙 간 지연",
 	"volume": "음량",
 	"END": ""

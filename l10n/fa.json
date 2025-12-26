@@ -14,8 +14,11 @@
 	"playlist_shuffle": "لیست پخش را تغییر دهید",
 	"prev_track": "آهنگ قبلی",
 	"settings": "تنظیمات",
+	"show_cover_art": "نمایش تصویر آلبوم",
+	"show_analyser": "نمایش تحلیلگر طیف",
 	"stop": "متوقف کردن",
 	"title": "عنوان",
+	"toggle_mute": "تغییر وضعیت بی صدا",
 	"track_delay": "تأخیر بین آهنگ ها در لیست پخش",
 	"volume": "جلد",
 	"END": ""

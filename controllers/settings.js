@@ -5,9 +5,23 @@
 	.controller('SettingsCtrl', ($scope, $rootScope, $http) => {
 		const savedSettings = JSON.parse(localStorage.getItem('settings') || '{}');
 
+		const themesMenu = {
+			'default': 'Default',
+			'red': 'Red',
+			'org': 'Orange',
+			'gld': 'Gold',
+			'lim': 'Lime',
+			'grn': 'Green',
+			'tel': 'Teal',
+			'blu': 'Blue',
+			'prp': 'Purple',
+		};
+
 		$scope.settings = {
 			'language': (savedSettings.language || $scope.$parent.currLang),
 			'langsMenu': {},
+			'curr_theme': (savedSettings.curr_theme || 'default'),
+			'themesMenu': themesMenu,
 			'play_on_add': (savedSettings.play_on_add == 'Y'),
 			'fade_on_pause': (savedSettings.fade_on_pause == 'Y'),
 			'track_delay': parseInt(savedSettings.track_delay) || 1,

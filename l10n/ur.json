@@ -14,8 +14,11 @@
 	"playlist_shuffle": "پلے لسٹ شفل کریں",
 	"prev_track": "پچھلا ٹریک",
 	"settings": "ترتیبات",
+	"show_cover_art": "البم آرٹ دکھائیں۔",
+	"show_analyser": "سپیکٹرم تجزیہ کار دکھائیں۔",
 	"stop": "رک جاؤ",
 	"title": "عنوان",
+	"toggle_mute": "خاموش ٹوگل کریں۔",
 	"track_delay": "پلے لسٹ میں پٹریوں کے مابین تاخیر",
 	"volume": "حجم",
 	"END": ""

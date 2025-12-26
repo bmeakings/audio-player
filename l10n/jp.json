@@ -14,8 +14,11 @@
 	"playlist_shuffle": "シャッフルプレイリスト",
 	"prev_track": "前のトラック",
 	"settings": "設定",
+	"show_cover_art": "アルバムアートを表示",
+	"show_analyser": "スペクトラムアナライザーを表示",
 	"stop": "やめる",
 	"title": "題名",
+	"toggle_mute": "ミュートを切り替え",
 	"track_delay": "プレイリストのトラック間の遅延",
 	"volume": "ボリューム",
 	"END": ""

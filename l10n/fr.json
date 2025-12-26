@@ -14,8 +14,11 @@
 	"playlist_shuffle": "Liste de lecture aléatoire",
 	"prev_track": "Piste précédente",
 	"settings": "Réglages",
+	"show_cover_art": "Afficher la pochette de l'album",
+	"show_analyser": "Afficher l'analyseur de spectre",
 	"stop": "Arrêtez",
 	"title": "Titre",
+	"toggle_mute": "Activer/désactiver le mode silencieux",
 	"track_delay": "Délai entre les pistes de la playlist",
 	"volume": "Volume",
 	"END": ""

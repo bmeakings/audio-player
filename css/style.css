@@ -9,14 +9,23 @@ html, body {
 md-checkbox .md-label {
 	margin-top: 12px;
 }
-#playerPage md-card {
-	background-color: #ddd;
-}
 .md-errors-spacer {
 	display: none;
 }
 main.flex {
 	overflow-y: auto;
+	height: 100%;
+}
+#playerInclude {
+	height: 100%;
+}
+#playerPage {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+#playerPage > md-card:not(:last-of-type) {
+	margin-bottom: 0px;
 }
 #playerArea > md-card-title {
 	padding: 10px;
@@ -141,11 +150,15 @@ main.flex {
 #volumeMeter > div {
 	background-color: #333;
 }
+#playlistArea {
+	flex-grow: 1;
+}
 #playlistArea > md-card-content {
 	padding: 10px;
+	height: 100%;
 }
 #playlistMenu, #playlistBtnArea {
-	height: 120px;
+	height: 100%;
 }
 #playlistMenu {
 	float: left;
@@ -171,3 +184,13 @@ main.flex {
 #settingsCard > md-card-content > div.layout-row > md-select {
 	height: 25px;
 }
+
+.themeCard.default { background-color: #ddd; }
+.themeCard.red { background-color: #d32f2f; }
+.themeCard.org { background-color: #ff9800; }
+.themeCard.gld { background-color: #ffc107; }
+.themeCard.lim { background-color: #cddc39; }
+.themeCard.grn { background-color: #4caf50; }
+.themeCard.tel { background-color: #009688; }
+.themeCard.blu { background-color: #03a9f4; }
+.themeCard.prp { background-color: #7e57c2; }

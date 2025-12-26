@@ -17,7 +17,9 @@
 	"show_cover_art": "Show Cover Art",
 	"show_analyser": "Show Spectrum Analyser",
 	"stop": "Stop",
+	"theme": "Colour Theme",
 	"title": "Title",
+	"toggle_mute": "Toggle Mute",
 	"track_delay": "Delay between tracks in playlist",
 	"volume": "Volume",
 	"END": ""

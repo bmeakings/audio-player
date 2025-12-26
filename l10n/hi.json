@@ -14,8 +14,11 @@
 	"playlist_shuffle": "शफल प्लेलिस्ट",
 	"prev_track": "पिछला ट्रैक",
 	"settings": "समायोजन",
+	"show_cover_art": "एल्बम आर्ट दिखाएं",
+	"show_analyser": "स्पेक्ट्रम एनालाइजर दिखाएं",
 	"stop": "रुकें",
 	"title": "शीर्षक",
+	"toggle_mute": "टॉगल म्यूट करें",
 	"track_delay": "प्लेलिस्ट में पटरियों के बीच देरी",
 	"volume": "आयतन",
 	"END": ""

@@ -14,8 +14,11 @@
 	"playlist_shuffle": "قائمة تشغيل عشوائية",
 	"prev_track": "المسار السابق",
 	"settings": "إعدادات",
+	"show_cover_art": "عرض صورة الغلاف",
+	"show_analyser": "عرض محلل الطيف",
 	"stop": "قف",
 	"title": "عنوان",
+	"toggle_mute": "كتم الصوت",
 	"track_delay": "التأخير بين المسارات في قائمة التشغيل",
 	"volume": "الصوت",
 	"END": ""

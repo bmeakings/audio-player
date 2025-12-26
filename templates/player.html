@@ -1,7 +1,7 @@
 <main class="flex" ng-controller="PlayerCtrl">
 	<md-content id="playerPage">
 		<!-- top info -->
-		<md-card id="playerArea">
+		<md-card id="playerArea" class="themeCard" ng-class="$parent.settings.curr_theme">
 			<md-card-title>
 				<md-card-title-text class="md-truncate">
 					<div class="md-headline md-truncate" title="{{ playback.title }}">{{playback.title}}</div>
@@ -42,7 +42,7 @@
 		</md-card>
 
 		<!-- buttons -->
-		<md-card id="playButtonsArea" class="buttonArea">
+		<md-card id="playButtonsArea" class="buttonArea themeCard" ng-class="$parent.settings.curr_theme">
 
 			<!-- open file -->
 			<md-button
@@ -119,7 +119,7 @@
 			<md-button
 				id="muteBtn"
 				class="md-fab md-raised md-mini"
-				title="Toggle Mute (ctrl + M)"
+				title="{{ $parent.langStrings.toggle_mute }} (ctrl + M)"
 				aria-label="Mute"
 				ng-class="{'md-primary': currVolume == 0.0}"
 				ng-click="toggleMute()"
@@ -155,7 +155,7 @@
 		</md-card>
 
 		<!-- playlist -->
-		<md-card id="playlistArea">
+		<md-card id="playlistArea" class="themeCard" ng-class="$parent.settings.curr_theme">
 			<md-card-content>
 				<select id="playlistMenu" multiple="multiple" ng-keyup="trackSelected()">
 					<option

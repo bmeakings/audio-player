@@ -14,8 +14,11 @@
 	"playlist_shuffle": "Shuffle Senarai Main",
 	"prev_track": "Trek Sebelumnya",
 	"settings": "Tetapan",
+	"show_cover_art": "Tunjukkan Seni Album",
+	"show_analyser": "Tunjukkan Penganalisis Spektrum",
 	"stop": "Berhenti",
 	"title": "Tajuk",
+	"toggle_mute": "Togol Bisu",
 	"track_delay": "Kelewatan antara trek dalam senarai main",
 	"volume": "Isipadu",
 	"END": ""

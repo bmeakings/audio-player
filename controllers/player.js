@@ -293,7 +293,7 @@
 			if (playOpenedFile) {
 				playOpenedFile = false;
 
-				playMedia($scope.playlist.length - 1, 'loadFiles');
+				playMedia($scope.playlist.length - fileInput.files.length, 'loadFiles');
 			}
 		};
 
