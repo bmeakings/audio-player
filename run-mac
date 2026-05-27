@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cd "$(dirname "$0")"
+nohup /Applications/Electron.app/Contents/MacOS/Electron . > /dev/null 2>&1 &
+exit
