@@ -70,13 +70,11 @@
 
 			newPlaylist = true;
 
-			if (!$scope.playback.playing && playlistEmpty && playOpenedFile)
-				playMedia(0, 'addToPlaylist');
+			if ($scope.settings.play_on_add && !$scope.playback.playing)
+				playMedia($scope.playlist.length - 1);
 		}
 
-		function playMedia(index, caller) {
-			console.log('playMedia', index, caller);
-
+		function playMedia(index) {
 			newPlaylist = false;
 			$scope.currPlayIdx = index;
 			$scope.coverArtImg = './imgs/cover-art.jpg';
@@ -128,7 +126,7 @@
 		function playRandom() {
 			$scope.currPlayIdx = Math.floor(Math.random() * Math.floor($scope.playlist.length));
 
-			playMedia($scope.currPlayIdx, 'playRandom');
+			playMedia($scope.currPlayIdx);
 		}
 
 		function spectrumAnalyser() {
@@ -275,10 +273,10 @@
 		};
 
 		$scope.openFile = (playFile) => {
-			playOpenedFile = playFile;
+			// playOpenedFile = playFile;
 
-			if (!playFile && $scope.settings.play_on_add)
-				playOpenedFile = true;
+			// if (!playFile && $scope.settings.play_on_add)
+			// 	playOpenedFile = true;
 
 			document.getElementById('openBtn').blur();
 			fileInput.click();
@@ -291,9 +289,9 @@
 			addToPlaylist(files, true);
 
 			if (playOpenedFile) {
-				playOpenedFile = false;
+				// playOpenedFile = false;
 
-				playMedia($scope.playlist.length - fileInput.files.length, 'loadFiles');
+				playMedia($scope.playlist.length - fileInput.files.length);
 			}
 		};
 
@@ -304,7 +302,7 @@
 				if ($scope.randomOrder)
 					playRandom();
 				else
-					playMedia(0, 'togglePlayback');
+					playMedia(0);
 
 				return;
 			}
@@ -359,7 +357,7 @@
 				$scope.currPlayIdx++;
 
 				$scope.stopPlayback();
-				playMedia($scope.currPlayIdx, 'nextTrack');
+				playMedia($scope.currPlayIdx);
 			}
 		};
 
@@ -370,7 +368,7 @@
 				$scope.currPlayIdx--;
 
 				$scope.stopPlayback();
-				playMedia($scope.currPlayIdx, 'prevTrack');
+				playMedia($scope.currPlayIdx);
 			}
 		};
 
@@ -399,7 +397,7 @@
 
 		$scope.changeTrack = (index) => {
 			document.getElementById('playlistMenu').blur();
-			playMedia(index, 'changeTrack');
+			playMedia(index);
 		};
 
 		$scope.shufflePlaylist = () => {
@@ -432,13 +430,12 @@
 		});
 
 		document.getElementById('playlistArea').addEventListener('keyup', (event) => {
-			console.log('key up (playlist)', event.code);
 			document.getElementById('playlistArea').blur();
 			event.stopPropagation();
 
 			switch (event.code) {
 				case 'Enter': case 'NumpadEnter': {
-					playMedia($scope.currPlayIdx, 'playlist');
+					playMedia($scope.currPlayIdx);
 					break;
 				}
 				case 'Space': {
@@ -454,8 +451,6 @@
 		});
 
 		document.addEventListener('keydown', (event) => {
-			console.log('key down', event.code);
-
 			switch (event.code) {
 				case 'ControlLeft': case 'ControlRight': {
 					ctrlKeyDown = true;
@@ -473,8 +468,6 @@
 		});
 
 		document.addEventListener('keyup', (event) => {
-			console.log('key up (window)', event.code);
-
 			switch (event.code) {
 				case 'ControlLeft': case 'ControlRight': {
 					ctrlKeyDown = false;
@@ -545,7 +538,7 @@
 					else {
 						if ($scope.currPlayIdx == ($scope.playlist.length - 1)) {
 							if ($scope.playback.loop)
-								playMedia(0, 'looped 1');
+								playMedia(0);
 						}
 						else {
 							$scope.nextTrack();
@@ -553,7 +546,7 @@
 					}
 				}
 				else if ($scope.playback.loop) {
-					playMedia($scope.currPlayIdx, 'looped 2');
+					playMedia($scope.currPlayIdx);
 				}
 			}, $scope.settings.track_delay * 1000);
 		});
